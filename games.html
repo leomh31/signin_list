@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الألعاب - LB4 Store</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <div class="logo">
+                <h1>LB4 Store</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">الصفحة الرئيسية</a></li>
+                    <li><a href="apps.html">التطبيقات</a></li>
+                    <li><a href="https://www.facebook.com/profile.php?id=100069049429844" target="_blank">اتصل بنا</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="search-container">
+        <input type="text" id="search" placeholder="ابحث عن لعبة...">
+    </div>
+
+    <div class="main-content">
+        <h2>ألعاب الكمبيوتر</h2>
+
+        <div class="game-container">
+            <!-- لعبة 1 GTA San Andreas -->
+            <div class="game-card">
+                <a href="gta-san-andreas-description.html">
+                    <img src="images/gta-san-andreas.jpg" alt="GTA San Andreas" class="game-image">
+                </a>
+                <h3>GTA San Andreas</h3>
+            </div>
+
+            <!-- يمكنك إضافة المزيد من الألعاب هنا بنفس الطريقة -->
+        </div>
+
+        <h2>ألعاب الهاتف</h2>
+        <div class="game-container">
+            <!-- لعبة 1 هاتف -->
+            <div class="game-card">
+                <a href="mobile-game1-description.html">
+                    <img src="images/mobile-game1.jpg" alt="Mobile Game 1" class="game-image">
+                </a>
+                <h3>لعبة الهاتف 1</h3>
+            </div>
+
+            <!-- يمكنك إضافة المزيد من الألعاب هنا -->
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 LB4 Store. جميع الحقوق محفوظة.</p>
+    </footer>
+
+    <script>
+        // وظيفة البحث (البحث في الألعاب)
+        document.getElementById("search").addEventListener("input", function () {
+            let searchValue = this.value.toLowerCase();
+            let gameCards = document.querySelectorAll(".game-card");
+
+            gameCards.forEach(function (card) {
+                let gameName = card.querySelector("h3").textContent.toLowerCase();
+                if (gameName.includes(searchValue)) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        });
+    </script>
+</body>
+</html>
