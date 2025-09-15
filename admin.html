@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة الأدمن</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body { font-family:'Cairo',sans-serif; background:#0f172a; color:#fff; margin:0; padding:20px; }
+h1 { text-align:center; color:#38bdf8; margin-bottom:20px;}
+.table { width:100%; border-collapse: collapse; margin-top:20px; }
+.table th, .table td { border:1px solid #334155; padding:10px; text-align:center; }
+.table th { background:#1e293b; color:#facc15; }
+button { padding:6px 12px; border:none; border-radius:10px; cursor:pointer; margin:2px; transition:0.3s;}
+.verify { background:#00e6a8; color:#000; font-weight:bold; }
+button:hover { transform:scale(1.05);}
+.details {
+  margin-top: 20px;
+  padding: 15px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 12px;
+  display: none;
+}
+</style>
+</head>
+<body>
+<h1>💻 لوحة الأدمن - LB4 Legends</h1>
+<table class="table">
+  <thead>
+    <tr>
+      <th>اللاعب</th>
+      <th>أوامر</th>
+    </tr>
+  </thead>
+  <tbody id="playersList"></tbody>
+</table>
+
+<div id="details" class="details"></div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDJke7t9YM-iLmuM6wAyycjbpvsjS5oajA",
+    authDomain: "lb4legendsauth.firebaseapp.com",
+    projectId: "lb4legendsauth",
+    storageBucket: "lb4legendsauth.appspot.com",
+    messagingSenderId: "95326441450",
+    appId: "1:95326441450:web:8f290d074f53b1bbe0ac93"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  function renderPlayer(doc) {
+    const tbody = document.getElementById("playersList");
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${doc.data().minecraftUsername || "بدون"}</td>
+      <td>
+        <button class="verify" onclick="showDetails('${doc.id}')">تحقيق</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  }
+
+  db.collection("players").orderBy("timestamp").onSnapshot(snapshot => {
+    document.getElementById("playersList").innerHTML = "";
+    snapshot.forEach(doc => renderPlayer(doc));
+  });
+
+  function showDetails(id) {
+    db.collection("players").doc(id).get().then(doc => {
+      const data = doc.data();
+      const detailsDiv = document.getElementById("details");
+      detailsDiv.style.display = "block";
+      detailsDiv.innerHTML = `
+        <h3>📋 تفاصيل اللاعب</h3>
+        <p><strong>Minecraft:</strong> ${data.minecraftUsername}</p>
+        <p><strong>Aternos:</strong> ${data.aternosUsername}</p>
+        <p><strong>السؤال:</strong> ${data.question}</p>
+        <p><strong>الإصدار:</strong> ${data.version}</p>
+        <p><strong>الحالة:</strong> ${data.status}</p>
+      `;
+    });
+  }
+</script>
+</body>
+</html>
